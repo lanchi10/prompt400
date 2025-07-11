@@ -7,114 +7,160 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         
         * {
-            font-family: 'Heebo', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
         
         .gradient-bg {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
         
-        .bot-card {
+        .bot-button {
             transition: all 0.3s ease;
-            border: 2px solid transparent;
+            border: 2px solid #374151;
+            color: #1f2937;
+            font-weight: 600;
         }
         
-        .bot-card:hover {
+        .bot-button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
         }
         
-        .chatgpt-bg { background: linear-gradient(135deg, #10a37f 0%, #1a7f64 100%); }
-        .claude-bg { background: linear-gradient(135deg, #f97316 0%, #ea580c 100%); }
-        .gemini-bg { background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); }
-        .copilot-bg { background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%); }
-        .perplexity-bg { background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%); }
-        .deepseek-bg { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); }
-        .genspark-bg { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
-        .grok-bg { background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%); }
-        .other-bg { background: linear-gradient(135deg, #ec4899 0%, #db2777 100%); }
+        .chatgpt-btn { background: #d1fae5; }
+        .claude-btn { background: #fed7aa; }
+        .gemini-btn { background: #bfdbfe; }
+        .copilot-btn { background: #e9d5ff; }
+        .perplexity-btn { background: #a7f3d0; }
+        .deepseek-btn { background: #fecaca; }
+        .genspark-btn { background: #fef3c7; }
+        .grok-btn { background: #e5e7eb; }
         
-        .result-box {
-            background: rgba(255, 255, 255, 0.95);
-            border: 1px solid #e5e7eb;
-            color: #111827;
+        .result-textarea {
+            border: 2px solid #d1d5db;
+            border-radius: 8px;
+            padding: 12px;
             min-height: 120px;
+            font-size: 14px;
+            line-height: 1.5;
+            resize: vertical;
         }
         
-        .analysis-section {
-            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        .result-textarea:focus {
+            border-color: #3b82f6;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
         
         .copy-success {
-            animation: pulse 0.5s ease-in-out;
+            animation: copySuccess 2s ease-in-out;
         }
         
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+        @keyframes copySuccess {
+            0% { opacity: 0; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.1); }
+            100% { opacity: 0; transform: scale(1); }
         }
         
         .modal {
-            backdrop-filter: blur(10px);
-            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
         }
         
         .modal-content {
-            max-height: 90vh;
+            background: white;
+            margin: 5% auto;
+            padding: 20px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 80vh;
             overflow-y: auto;
         }
         
-        .fade-in {
-            animation: fadeIn 0.3s ease-in;
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            z-index: 1001;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
         }
         
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .notification.show {
+            transform: translateX(0);
         }
         
-        .blog-preview {
-            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-            border-right: 4px solid #f59e0b;
+        .notification.success {
+            background: #10b981;
         }
         
-        .insight-card {
-            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
-            border-right: 4px solid #3b82f6;
+        .section-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin: 16px 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border: 1px solid #e5e7eb;
         }
         
-        .action-card {
-            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
-            border-right: 4px solid #10b981;
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
-        .warning-card {
-            background: linear-gradient(135deg, #fef2f2 0%, #fecaca 100%);
-            border-right: 4px solid #ef4444;
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: #e5e7eb;
+            border-radius: 2px;
+            overflow: hidden;
+            margin: 16px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+            width: 0%;
+            transition: width 0.3s ease;
         }
     </style>
 </head>
-<body class="bg-gray-50 min-h-screen">
+<body class="bg-gray-100 min-h-screen">
     <!-- Header -->
-    <header class="gradient-bg text-white shadow-lg">
-        <div class="container mx-auto px-4 py-6">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-3">
-                    <i class="fas fa-brain text-3xl"></i>
-                    <h1 class="text-2xl md:text-3xl font-bold">מרכז ניתוח תוכן AI</h1>
+    <header class="gradient-bg text-white py-6">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <i class="fas fa-robot text-3xl"></i>
+                    <div>
+                        <h1 class="text-2xl font-bold">מרכז ניתוח תוכן AI</h1>
+                        <p class="text-blue-100">השוואת תוצאות מבוטי AI עם ניתוח תוכן מתקדם</p>
+                    </div>
                 </div>
-                <div class="flex space-x-3">
-                    <button onclick="showGuide()" class="bg-white bg-opacity-20 hover:bg-opacity-30 px-4 py-2 rounded-lg transition-all duration-300">
-                        <i class="fas fa-question-circle ml-2"></i>
-                        מדריך למשתמש
+                <div class="flex gap-2">
+                    <button onclick="showGuide()" class="bg-white bg-opacity-20 hover:bg-opacity-30 px-4 py-2 rounded-lg transition-all">
+                        <i class="fas fa-question-circle mr-2"></i>מדריך
                     </button>
-                    <button onclick="clearAll()" class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg transition-all duration-300">
-                        <i class="fas fa-trash ml-2"></i>
-                        נקה הכל
+                    <button onclick="clearAll()" class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg transition-all">
+                        <i class="fas fa-trash mr-2"></i>נקה הכל
                     </button>
                 </div>
             </div>
@@ -122,1061 +168,837 @@
     </header>
 
     <div class="container mx-auto px-4 py-8">
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
         <!-- Step 1: Create Prompt -->
-        <div class="bg-white rounded-xl shadow-lg p-6 mb-8 fade-in">
-            <h2 class="text-2xl font-bold mb-6 text-gray-800">
-                <i class="fas fa-edit text-blue-500 ml-2"></i>
-                שלב 1: יצירת פרומפט
-            </h2>
+        <div class="section-card">
+            <div class="section-title">
+                <i class="fas fa-edit text-blue-500"></i>
+                שלב 1: יצירת פרומפט מתקדם
+            </div>
             
-            <div class="space-y-4">
+            <div class="grid md:grid-cols-2 gap-6">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">הכנס נושא או שאלה:</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">נושא או שאלה</label>
                     <textarea 
                         id="topicInput" 
-                        placeholder="לדוגמה: השפעת הבינה המלאכותית על החינוך המודרני"
-                        class="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        rows="3"
-                    ></textarea>
+                        class="w-full border-2 border-gray-300 rounded-lg px-3 py-2 focus:border-blue-500 focus:outline-none resize-none"
+                        rows="4"
+                        placeholder="הכנס את הנושא או השאלה שלך כאן..."
+                        oninput="updateProgress()">
+                    </textarea>
                 </div>
                 
-                <div class="flex items-center space-x-4">
-                    <label class="text-sm font-medium text-gray-700">בחר שפה:</label>
-                    <div class="flex space-x-4">
-                        <label class="flex items-center">
-                            <input type="radio" name="language" value="hebrew" checked class="ml-2">
-                            <span>עברית</span>
-                        </label>
-                        <label class="flex items-center">
-                            <input type="radio" name="language" value="english" class="ml-2">
-                            <span>English</span>
-                        </label>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">שפה</label>
+                        <div class="flex gap-4">
+                            <label class="flex items-center">
+                                <input type="radio" name="language" value="hebrew" checked class="mr-2">
+                                <span>עברית</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="language" value="english" class="mr-2">
+                                <span>English</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <button onclick="generatePrompt()" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-4 rounded-lg transition-all">
+                        <i class="fas fa-magic mr-2"></i>הכן פרומפט מתקדם
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2: Generated Prompt -->
+        <div class="section-card">
+            <div class="section-title">
+                <i class="fas fa-file-alt text-green-500"></i>
+                שלב 2: הפרומפט המוכן
+            </div>
+            
+            <div class="space-y-4">
+                <div class="bg-gray-50 border-2 border-gray-200 rounded-lg p-4">
+                    <div id="generatedPrompt" class="text-gray-500 italic min-h-[100px] leading-relaxed">
+                        הפרומפט יופיע כאן לאחר הכנתו...
                     </div>
                 </div>
                 
-                <div class="flex space-x-4">
-                    <button 
-                        onclick="generatePrompt()" 
-                        class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 transform hover:scale-105"
-                    >
-                        <i class="fas fa-magic ml-2"></i>
-                        הכן פרומפט
+                <div class="flex gap-2">
+                    <button onclick="copyPrompt()" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-all">
+                        <i class="fas fa-copy mr-2"></i>העתק פרומפט
                     </button>
-                </div>
-            </div>
-            
-            <div id="promptResult" class="mt-6 hidden">
-                <label class="block text-sm font-medium text-gray-700 mb-2">הפרומפט המוכן:</label>
-                <div class="relative">
-                    <textarea 
-                        id="generatedPrompt" 
-                        class="w-full p-4 border border-gray-300 rounded-lg bg-gray-50"
-                        rows="4"
-                        readonly
-                    ></textarea>
-                    <button 
-                        onclick="copyPrompt()" 
-                        class="absolute bottom-3 left-3 bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm transition-all duration-300"
-                    >
-                        <i class="fas fa-copy ml-1"></i>
-                        העתק
+                    <button onclick="regeneratePrompt()" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg transition-all">
+                        <i class="fas fa-redo mr-2"></i>חדש פרומפט
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- Step 2: Quick Access to Bots -->
-        <div class="bg-white rounded-xl shadow-lg p-6 mb-8 fade-in">
-            <h2 class="text-2xl font-bold mb-6 text-gray-800">
-                <i class="fas fa-rocket text-purple-500 ml-2"></i>
-                שלב 2: גישה מהירה לבוטים
-            </h2>
-            
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                <a href="https://chat.openai.com" target="_blank" class="bot-card chatgpt-bg text-white p-4 rounded-lg text-center hover:shadow-lg">
-                    <i class="fab fa-openai text-2xl mb-2"></i>
-                    <div class="font-medium">ChatGPT</div>
-                    <div class="text-xs opacity-75">OpenAI</div>
-                </a>
-                
-                <a href="https://claude.ai" target="_blank" class="bot-card claude-bg text-white p-4 rounded-lg text-center hover:shadow-lg">
-                    <i class="fas fa-robot text-2xl mb-2"></i>
-                    <div class="font-medium">Claude</div>
-                    <div class="text-xs opacity-75">Anthropic</div>
-                </a>
-                
-                <a href="https://gemini.google.com" target="_blank" class="bot-card gemini-bg text-white p-4 rounded-lg text-center hover:shadow-lg">
-                    <i class="fab fa-google text-2xl mb-2"></i>
-                    <div class="font-medium">Gemini</div>
-                    <div class="text-xs opacity-75">Google</div>
-                </a>
-                
-                <a href="https://copilot.microsoft.com" target="_blank" class="bot-card copilot-bg text-white p-4 rounded-lg text-center hover:shadow-lg">
-                    <i class="fab fa-microsoft text-2xl mb-2"></i>
-                    <div class="font-medium">Copilot</div>
-                    <div class="text-xs opacity-75">Microsoft</div>
-                </a>
-                
-                <a href="https://perplexity.ai" target="_blank" class="bot-card perplexity-bg text-white p-4 rounded-lg text-center hover:shadow-lg">
-                    <i class="fas fa-search text-2xl mb-2"></i>
-                    <div class="font-medium">Perplexity</div>
-                    <div class="text-xs opacity-75">Perplexity</div>
-                </a>
-                
-                <a href="https://chat.deepseek.com" target="_blank" class="bot-card deepseek-bg text-white p-4 rounded-lg text-center hover:shadow-lg">
-                    <i class="fas fa-brain text-2xl mb-2"></i>
-                    <div class="font-medium">DeepSeek</div>
-                    <div class="text-xs opacity-75">DeepSeek</div>
-                </a>
-                
-                <a href="https://genspark.ai" target="_blank" class="bot-card genspark-bg text-white p-4 rounded-lg text-center hover:shadow-lg">
-                    <i class="fas fa-spark text-2xl mb-2"></i>
-                    <div class="font-medium">Genspark</div>
-                    <div class="text-xs opacity-75">Genspark</div>
-                </a>
-                
-                <a href="https://grok.x.ai" target="_blank" class="bot-card grok-bg text-white p-4 rounded-lg text-center hover:shadow-lg">
-                    <i class="fab fa-x-twitter text-2xl mb-2"></i>
-                    <div class="font-medium">Grok</div>
-                    <div class="text-xs opacity-75">X.ai</div>
-                </a>
-                
-                <div class="bot-card other-bg text-white p-4 rounded-lg text-center">
-                    <i class="fas fa-plus text-2xl mb-2"></i>
-                    <div class="font-medium">אחר</div>
-                    <div class="text-xs opacity-75">מקור נוסף</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Step 3: Collect Results -->
-        <div class="bg-white rounded-xl shadow-lg p-6 mb-8 fade-in">
-            <h2 class="text-2xl font-bold mb-6 text-gray-800">
-                <i class="fas fa-clipboard-list text-green-500 ml-2"></i>
-                שלב 3: איסוף תוצאות
-            </h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="space-y-2">
-                    <label class="block text-sm font-medium text-gray-700">
-                        <i class="fab fa-openai text-green-600 ml-1"></i>
-                        ChatGPT
-                    </label>
-                    <textarea 
-                        id="chatgpt-result" 
-                        placeholder="הדבק כאן את תשובת ChatGPT..."
-                        class="result-box w-full p-3 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent resize-none"
-                        rows="6"
-                    ></textarea>
-                </div>
-                
-                <div class="space-y-2">
-                    <label class="block text-sm font-medium text-gray-700">
-                        <i class="fas fa-robot text-orange-600 ml-1"></i>
-                        Claude
-                    </label>
-                    <textarea 
-                        id="claude-result" 
-                        placeholder="הדבק כאן את תשובת Claude..."
-                        class="result-box w-full p-3 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent resize-none"
-                        rows="6"
-                    ></textarea>
-                </div>
-                
-                <div class="space-y-2">
-                    <label class="block text-sm font-medium text-gray-700">
-                        <i class="fab fa-google text-blue-600 ml-1"></i>
-                        Gemini
-                    </label>
-                    <textarea 
-                        id="gemini-result" 
-                        placeholder="הדבק כאן את תשובת Gemini..."
-                        class="result-box w-full p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
-                        rows="6"
-                    ></textarea>
-                </div>
-                
-                <div class="space-y-2">
-                    <label class="block text-sm font-medium text-gray-700">
-                        <i class="fab fa-microsoft text-purple-600 ml-1"></i>
-                        Copilot
-                    </label>
-                    <textarea 
-                        id="copilot-result" 
-                        placeholder="הדבק כאן את תשובת Copilot..."
-                        class="result-box w-full p-3 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
-                        rows="6"
-                    ></textarea>
-                </div>
-                
-                <div class="space-y-2">
-                    <label class="block text-sm font-medium text-gray-700">
-                        <i class="fas fa-search text-cyan-600 ml-1"></i>
-                        Perplexity
-                    </label>
-                    <textarea 
-                        id="perplexity-result" 
-                        placeholder="הדבק כאן את תשובת Perplexity..."
-                        class="result-box w-full p-3 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent resize-none"
-                        rows="6"
-                    ></textarea>
-                </div>
-                
-                <div class="space-y-2">
-                    <label class="block text-sm font-medium text-gray-700">
-                        <i class="fas fa-brain text-red-600 ml-1"></i>
-                        DeepSeek
-                    </label>
-                    <textarea 
-                        id="deepseek-result" 
-                        placeholder="הדבק כאן את תשובת DeepSeek..."
-                        class="result-box w-full p-3 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent resize-none"
-                        rows="6"
-                    ></textarea>
-                </div>
-                
-                <div class="space-y-2">
-                    <label class="block text-sm font-medium text-gray-700">
-                        <i class="fas fa-spark text-yellow-600 ml-1"></i>
-                        Genspark
-                    </label>
-                    <textarea 
-                        id="genspark-result" 
-                        placeholder="הדבק כאן את תשובת Genspark..."
-                        class="result-box w-full p-3 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent resize-none"
-                        rows="6"
-                    ></textarea>
-                </div>
-                
-                <div class="space-y-2">
-                    <label class="block text-sm font-medium text-gray-700">
-                        <i class="fab fa-x-twitter text-gray-600 ml-1"></i>
-                        Grok
-                    </label>
-                    <textarea 
-                        id="grok-result" 
-                        placeholder="הדבק כאן את תשובת Grok..."
-                        class="result-box w-full p-3 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent resize-none"
-                        rows="6"
-                    ></textarea>
-                </div>
-                
-                <div class="space-y-2">
-                    <label class="block text-sm font-medium text-gray-700">
-                        <i class="fas fa-plus text-pink-600 ml-1"></i>
-                        מקור נוסף
-                    </label>
-                    <input 
-                        type="text" 
-                        id="other-source-name" 
-                        placeholder="שם המקור (לדוגמה: Llama, Mistral, מומחה אנושי...)"
-                        class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent mb-2"
-                    />
-                    <textarea 
-                        id="other-result" 
-                        placeholder="הדבק כאן את התשובה מהמקור הנוסף..."
-                        class="result-box w-full p-3 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent resize-none"
-                        rows="6"
-                    ></textarea>
-                </div>
+        <!-- Step 3: Quick Access to Bots -->
+        <div class="section-card">
+            <div class="section-title">
+                <i class="fas fa-rocket text-purple-500"></i>
+                שלב 3: גישה מהירה לבוטים
             </div>
             
-            <div class="mt-6 flex justify-center">
-                <button 
-                    onclick="analyzeContent()" 
-                    class="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-8 py-3 rounded-lg font-bold text-lg transition-all duration-300 transform hover:scale-105"
-                >
-                    <i class="fas fa-chart-line ml-2"></i>
-                    נתח תוכן וצור תובנות
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <button onclick="window.open('https://chat.openai.com', '_blank')" class="bot-button chatgpt-btn py-3 px-4 rounded-lg text-center">
+                    <i class="fas fa-robot mb-1"></i><br>ChatGPT
+                </button>
+                <button onclick="window.open('https://claude.ai', '_blank')" class="bot-button claude-btn py-3 px-4 rounded-lg text-center">
+                    <i class="fas fa-brain mb-1"></i><br>Claude
+                </button>
+                <button onclick="window.open('https://gemini.google.com', '_blank')" class="bot-button gemini-btn py-3 px-4 rounded-lg text-center">
+                    <i class="fas fa-gem mb-1"></i><br>Gemini
+                </button>
+                <button onclick="window.open('https://copilot.microsoft.com', '_blank')" class="bot-button copilot-btn py-3 px-4 rounded-lg text-center">
+                    <i class="fas fa-code mb-1"></i><br>Copilot
+                </button>
+                <button onclick="window.open('https://perplexity.ai', '_blank')" class="bot-button perplexity-btn py-3 px-4 rounded-lg text-center">
+                    <i class="fas fa-search mb-1"></i><br>Perplexity
+                </button>
+                <button onclick="window.open('https://deepseek.com', '_blank')" class="bot-button deepseek-btn py-3 px-4 rounded-lg text-center">
+                    <i class="fas fa-microscope mb-1"></i><br>DeepSeek
+                </button>
+                <button onclick="window.open('https://genspark.ai', '_blank')" class="bot-button genspark-btn py-3 px-4 rounded-lg text-center">
+                    <i class="fas fa-sparkles mb-1"></i><br>Genspark
+                </button>
+                <button onclick="window.open('https://grok.x.ai', '_blank')" class="bot-button grok-btn py-3 px-4 rounded-lg text-center">
+                    <i class="fas fa-lightning mb-1"></i><br>Grok
                 </button>
             </div>
         </div>
 
-        <!-- Step 4: Content Analysis Results -->
-        <div id="analysisResults" class="hidden">
-            <div class="analysis-section rounded-xl shadow-lg p-6 mb-8 fade-in">
-                <h2 class="text-2xl font-bold mb-6 text-gray-800">
-                    <i class="fas fa-microscope text-indigo-500 ml-2"></i>
-                    ניתוח תוכן מעמיק
-                </h2>
-                
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <!-- Key Insights -->
-                    <div class="insight-card p-6 rounded-lg">
-                        <h3 class="text-lg font-bold mb-4 text-blue-800">
-                            <i class="fas fa-lightbulb ml-2"></i>
-                            תובנות מרכזיות
-                        </h3>
-                        <div id="keyInsights" class="space-y-3">
-                            <!-- Dynamic content will be inserted here -->
-                        </div>
+        <!-- Step 4: Collect Results -->
+        <div class="section-card">
+            <div class="section-title">
+                <i class="fas fa-inbox text-indigo-500"></i>
+                שלב 4: איסוף תוצאות
+            </div>
+            
+            <div class="space-y-4">
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <p class="text-blue-800 font-medium">
+                        <i class="fas fa-info-circle mr-2"></i>
+                        העתק את הפרומפט לכל בוט והדבק כאן את התוצאות
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <i class="fas fa-robot text-green-500 mr-1"></i>ChatGPT
+                        </label>
+                        <textarea id="chatgptResult" class="result-textarea w-full" placeholder="הדבק כאן את תוצאת ChatGPT..." oninput="updateProgress()"></textarea>
                     </div>
                     
-                    <!-- Unique Perspectives -->
-                    <div class="action-card p-6 rounded-lg">
-                        <h3 class="text-lg font-bold mb-4 text-green-800">
-                            <i class="fas fa-eye ml-2"></i>
-                            זוויות ראייה ייחודיות
-                        </h3>
-                        <div id="uniquePerspectives" class="space-y-3">
-                            <!-- Dynamic content will be inserted here -->
-                        </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <i class="fas fa-brain text-orange-500 mr-1"></i>Claude
+                        </label>
+                        <textarea id="claudeResult" class="result-textarea w-full" placeholder="הדבק כאן את תוצאת Claude..." oninput="updateProgress()"></textarea>
                     </div>
-                </div>
-                
-                <!-- Content Synthesis -->
-                <div class="mt-6 bg-white p-6 rounded-lg shadow-sm">
-                    <h3 class="text-lg font-bold mb-4 text-gray-800">
-                        <i class="fas fa-compress ml-2"></i>
-                        סינתזה וטיעונים משלימים
-                    </h3>
-                    <div id="contentSynthesis" class="prose max-w-none">
-                        <!-- Dynamic content will be inserted here -->
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <i class="fas fa-gem text-blue-500 mr-1"></i>Gemini
+                        </label>
+                        <textarea id="geminiResult" class="result-textarea w-full" placeholder="הדבק כאן את תוצאת Gemini..." oninput="updateProgress()"></textarea>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <i class="fas fa-code text-purple-500 mr-1"></i>Copilot
+                        </label>
+                        <textarea id="copilotResult" class="result-textarea w-full" placeholder="הדבק כאן את תוצאת Copilot..." oninput="updateProgress()"></textarea>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <i class="fas fa-search text-teal-500 mr-1"></i>Perplexity
+                        </label>
+                        <textarea id="perplexityResult" class="result-textarea w-full" placeholder="הדבק כאן את תוצאת Perplexity..." oninput="updateProgress()"></textarea>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <i class="fas fa-microscope text-red-500 mr-1"></i>DeepSeek
+                        </label>
+                        <textarea id="deepseekResult" class="result-textarea w-full" placeholder="הדבק כאן את תוצאת DeepSeek..." oninput="updateProgress()"></textarea>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <i class="fas fa-sparkles text-yellow-500 mr-1"></i>Genspark
+                        </label>
+                        <textarea id="gensparkResult" class="result-textarea w-full" placeholder="הדבק כאן את תוצאת Genspark..." oninput="updateProgress()"></textarea>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <i class="fas fa-lightning text-gray-500 mr-1"></i>Grok
+                        </label>
+                        <textarea id="grokResult" class="result-textarea w-full" placeholder="הדבק כאן את תוצאת Grok..." oninput="updateProgress()"></textarea>
+                    </div>
+                    
+                    <div class="md:col-span-2">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-plus text-gray-500"></i>
+                            <input type="text" id="otherSourceName" placeholder="שם המקור הנוסף" class="border border-gray-300 rounded px-2 py-1 text-sm">
+                        </div>
+                        <textarea id="otherSourceResult" class="result-textarea w-full" placeholder="הדבק כאן תוצאה ממקור נוסף..." oninput="updateProgress()"></textarea>
                     </div>
                 </div>
             </div>
+        </div>
+
+        <!-- Step 5: Analysis and Actions -->
+        <div class="section-card">
+            <div class="section-title">
+                <i class="fas fa-chart-line text-red-500"></i>
+                שלב 5: ניתוח ופעולות
+            </div>
             
-            <!-- Generated Content -->
-            <div class="bg-white rounded-xl shadow-lg p-6 mb-8 fade-in">
-                <h2 class="text-2xl font-bold mb-6 text-gray-800">
-                    <i class="fas fa-pen-fancy text-yellow-500 ml-2"></i>
-                    תוכן מוכן לשימוש
-                </h2>
+            <div class="grid md:grid-cols-3 gap-4">
+                <button onclick="copyAllResults()" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-4 rounded-lg transition-all">
+                    <i class="fas fa-copy mr-2"></i>העתק הכל לניתוח עצמאי
+                </button>
                 
-                <div class="space-y-6">
-                    <!-- Blog Post -->
-                    <div class="blog-preview p-6 rounded-lg">
-                        <h3 class="text-lg font-bold mb-4 text-yellow-800">
-                            <i class="fas fa-blog ml-2"></i>
-                            פוסט בלוג מוכן
-                        </h3>
-                        <div class="relative">
-                            <div id="blogPost" class="bg-white p-4 rounded border-2 border-yellow-200 min-h-40">
-                                <!-- Dynamic content will be inserted here -->
-                            </div>
-                            <button 
-                                onclick="copyBlogPost()" 
-                                class="absolute top-2 left-2 bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded text-sm transition-all duration-300"
-                            >
-                                <i class="fas fa-copy ml-1"></i>
-                                העתק
-                            </button>
-                        </div>
+                <button onclick="analyzeContent()" class="bg-purple-500 hover:bg-purple-600 text-white font-semibold py-3 px-4 rounded-lg transition-all">
+                    <i class="fas fa-microscope mr-2"></i>נתח תוכן
+                </button>
+                
+                <button onclick="exportToGoogleDocs()" class="bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-4 rounded-lg transition-all">
+                    <i class="fas fa-file-export mr-2"></i>ייצא לגוגל דוקס
+                </button>
+            </div>
+            
+            <div class="mt-6 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                <h4 class="font-semibold text-yellow-800 mb-2">
+                    <i class="fas fa-lightbulb mr-2"></i>מומלץ לניתוח עצמאי:
+                </h4>
+                <div class="grid md:grid-cols-3 gap-4 text-sm">
+                    <div class="text-center">
+                        <i class="fas fa-crown text-yellow-500 text-2xl mb-2"></i>
+                        <p class="font-semibold">Claude</p>
+                        <p class="text-gray-600">מצטיין בניתוח מעמיק</p>
                     </div>
-                    
-                    <!-- Practical Recommendations -->
-                    <div class="action-card p-6 rounded-lg">
-                        <h3 class="text-lg font-bold mb-4 text-green-800">
-                            <i class="fas fa-tasks ml-2"></i>
-                            המלצות מעשיות
-                        </h3>
-                        <div id="practicalRecommendations" class="space-y-3">
-                            <!-- Dynamic content will be inserted here -->
-                        </div>
+                    <div class="text-center">
+                        <i class="fas fa-medal text-silver text-2xl mb-2"></i>
+                        <p class="font-semibold">ChatGPT</p>
+                        <p class="text-gray-600">מובנה וסדור</p>
                     </div>
-                    
-                    <!-- Next Steps -->
-                    <div class="warning-card p-6 rounded-lg">
-                        <h3 class="text-lg font-bold mb-4 text-red-800">
-                            <i class="fas fa-arrow-right ml-2"></i>
-                            צעדים הבאים לחקירה
-                        </h3>
-                        <div id="nextSteps" class="space-y-3">
-                            <!-- Dynamic content will be inserted here -->
-                        </div>
+                    <div class="text-center">
+                        <i class="fas fa-award text-orange-500 text-2xl mb-2"></i>
+                        <p class="font-semibold">Perplexity</p>
+                        <p class="text-gray-600">מחקר נוסף</p>
                     </div>
                 </div>
             </div>
+        </div>
+
+        <!-- Step 6: Analysis Results -->
+        <div class="section-card" id="analysisSection" style="display: none;">
+            <div class="section-title">
+                <i class="fas fa-brain text-pink-500"></i>
+                תוצאות הניתוח
+            </div>
             
-            <!-- Export Options -->
-            <div class="bg-white rounded-xl shadow-lg p-6 mb-8 fade-in">
-                <h2 class="text-2xl font-bold mb-6 text-gray-800">
-                    <i class="fas fa-download text-blue-500 ml-2"></i>
-                    ייצוא ושמירה
-                </h2>
-                
-                <div class="flex flex-wrap gap-4">
-                    <button 
-                        onclick="exportToGoogleDocs()" 
-                        class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300"
-                    >
-                        <i class="fab fa-google-drive ml-2"></i>
-                        ייצא לגוגל דוקס
-                    </button>
-                    
-                    <button 
-                        onclick="exportToMarkdown()" 
-                        class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300"
-                    >
-                        <i class="fab fa-markdown ml-2"></i>
-                        ייצא כ-Markdown
-                    </button>
-                    
-                    <button 
-                        onclick="saveToLocal()" 
-                        class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300"
-                    >
-                        <i class="fas fa-save ml-2"></i>
-                        שמור מקומית
-                    </button>
-                </div>
+            <div id="analysisResults" class="space-y-4">
+                <!-- Analysis results will be inserted here -->
             </div>
         </div>
     </div>
 
-    <!-- User Guide Modal -->
-    <div id="guideModal" class="fixed inset-0 modal hidden items-center justify-center z-50">
-        <div class="modal-content bg-white rounded-xl shadow-2xl m-4 p-6 max-w-4xl w-full">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold text-gray-800">
-                    <i class="fas fa-graduation-cap text-blue-500 ml-2"></i>
-                    מדריך למשתמש
-                </h2>
-                <button onclick="closeGuide()" class="text-gray-500 hover:text-gray-700 text-2xl">
+    <!-- Guide Modal -->
+    <div id="guideModal" class="modal">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold">מדריך למשתמש</h2>
+                <button onclick="closeGuide()" class="text-gray-500 hover:text-gray-700">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
             
-            <div class="space-y-6">
-                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-lg">
-                    <h3 class="font-bold text-lg mb-2">🎯 שלב 1: הכנת הפרומפט</h3>
-                    <p class="text-gray-700">כתוב נושא או שאלה מעניינת, בחר שפה, ולחץ "הכן פרומפט". הפרומפט יותאם אוטומטית לקבלת תוצאות מיטביות.</p>
+            <div class="space-y-4">
+                <div class="border-l-4 border-blue-500 pl-4">
+                    <h3 class="font-semibold text-blue-700">שלב 1: הכנת הפרומפט</h3>
+                    <p class="text-sm text-gray-600">הכנס את הנושא או השאלה שלך, בחר שפה, ולחץ על "הכן פרומפט מתקדם"</p>
                 </div>
                 
-                <div class="bg-gradient-to-r from-purple-50 to-pink-50 p-4 rounded-lg">
-                    <h3 class="font-bold text-lg mb-2">🤖 שלב 2: העתקה לבוטים</h3>
-                    <p class="text-gray-700">לחץ על כפתור "העתק" והדבק את הפרומפט בכל אחד מהבוטים באמצעות הקישורים המהירים.</p>
+                <div class="border-l-4 border-green-500 pl-4">
+                    <h3 class="font-semibold text-green-700">שלב 2: העתקת הפרומפט</h3>
+                    <p class="text-sm text-gray-600">לחץ על "העתק פרומפט" והדבק אותו בכל בוט</p>
                 </div>
                 
-                <div class="bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-lg">
-                    <h3 class="font-bold text-lg mb-2">📊 שלב 3: איסוף תוצאות</h3>
-                    <p class="text-gray-700">העתק את התשובות מכל בוט והדבק אותן בתיבות המתאימות. אפשר גם להוסיף מקור נוסף שלא ברשימה.</p>
+                <div class="border-l-4 border-purple-500 pl-4">
+                    <h3 class="font-semibold text-purple-700">שלב 3: גישה לבוטים</h3>
+                    <p class="text-sm text-gray-600">השתמש בכפתורים לפתיחת הבוטים בטאבים נפרדים</p>
                 </div>
                 
-                <div class="bg-gradient-to-r from-yellow-50 to-orange-50 p-4 rounded-lg">
-                    <h3 class="font-bold text-lg mb-2">🔬 שלב 4: ניתוח חכם</h3>
-                    <p class="text-gray-700">לחץ "נתח תוכן" לקבלת תובנות מעמיקות, פוסט בלוג מוכן, והמלצות מעשיות המבוססות על כל התשובות.</p>
+                <div class="border-l-4 border-indigo-500 pl-4">
+                    <h3 class="font-semibold text-indigo-700">שלב 4: איסוף תוצאות</h3>
+                    <p class="text-sm text-gray-600">הדבק את התוצאות מכל בוט בשדות המתאימים</p>
                 </div>
                 
-                <div class="bg-gradient-to-r from-red-50 to-pink-50 p-4 rounded-lg">
-                    <h3 class="font-bold text-lg mb-2">💾 שלב 5: ייצוא ושמירה</h3>
-                    <p class="text-gray-700">ייצא את התוצאות לגוגל דוקס, שמור מקומית, או העתק חלקים ספציפיים לשימוש נוסף.</p>
+                <div class="border-l-4 border-red-500 pl-4">
+                    <h3 class="font-semibold text-red-700">שלב 5: ניתוח</h3>
+                    <p class="text-sm text-gray-600">בחר "העתק הכל לניתוח עצמאי" או "נתח תוכן" אוטומטית</p>
                 </div>
-                
-                <div class="bg-gradient-to-r from-indigo-50 to-purple-50 p-4 rounded-lg">
-                    <h3 class="font-bold text-lg mb-2">💡 טיפים מתקדמים</h3>
-                    <ul class="text-gray-700 space-y-1">
-                        <li>• השתמש בשאלות פתוחות לתוצאות מעמיקות יותר</li>
-                        <li>• הוסף הקשר רלוונטי לשאלה שלך</li>
-                        <li>• השווה בין סגנונות תשובה שונים</li>
-                        <li>• שלב תובנות מכמה בוטים ליצירת תוכן עשיר</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="mt-6 text-center">
-                <button onclick="closeGuide()" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg font-medium transition-all duration-300">
-                    בסדר, הבנתי!
-                </button>
             </div>
         </div>
     </div>
 
+    <!-- Notification -->
+    <div id="notification" class="notification"></div>
+
     <script>
-        // Global variables
-        let currentResults = {};
-        let currentAnalysis = {};
-        
-        // Generate prompt based on topic and language
+        // Progress tracking
+        function updateProgress() {
+            const topic = document.getElementById('topicInput').value;
+            const results = ['chatgptResult', 'claudeResult', 'geminiResult', 'copilotResult', 'perplexityResult', 'deepseekResult', 'gensparkResult', 'grokResult', 'otherSourceResult'];
+            const filledResults = results.filter(id => document.getElementById(id).value.trim() !== '').length;
+            
+            let progress = 0;
+            if (topic.trim() !== '') progress += 20;
+            progress += (filledResults / results.length) * 80;
+            
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        // Generate advanced prompt
         function generatePrompt() {
             const topic = document.getElementById('topicInput').value.trim();
             const language = document.querySelector('input[name="language"]:checked').value;
             
             if (!topic) {
-                alert('נא להכניס נושא או שאלה');
+                showNotification('אנא הכנס נושא או שאלה', 'error');
                 return;
             }
             
-            let prompt = '';
+            const hebrewPrompt = `# פרומפט מתקדם לניתוח מקיף - ${topic}
+
+## הפרומפט המתקדם
+
+**שלום! אני מבקש תשובה מקיפה ומותאמת תרבותית על הנושא הבא:**
+
+**"${topic}"**
+
+### הצגה עצמית נדרשת
+לפני התשובה, אנא הציג את עצמך בקצרה:
+- מי אתה ומה הטכנולוגיה שלך
+- **מה הערך המוסף הייחודי** שאתה מביא לנושא זה
+- איך אתה מתמחה ב**התאמה אישית** ו**רגישות תרבותית**
+
+### מבנה התשובה הנדרש
+
+**1. הסבר ברור ומקיף (25% מהתשובה)**
+- מה המשמעות והחשיבות של הנושא?
+- **האתגרים הייחודיים במציאות הישראלית**
+- השפעות והשלכות על תחומי חיים שונים
+
+**2. דוגמאות מעשיות (30% מהתשובה)**
+- **טבלאות ורשימות מפורטות**
+- דוגמאות ספציפיות ומגוונות
+- **פתרונות למגוון מצבים** (קל/בינוני/מורכב)
+- התאמה לרמות שונות של ניסיון
+
+**3. נקודות מבט מגוונות (20% מהתשובה)**
+- הבדלים בין **קהלים שונים**
+- שונות בין **גישות ושיטות**
+- **נקודת מבט כלכלית וחברתית**
+- **היבטים טכנולוגיים ומסורתיים**
+
+**4. המלצות מעשיות (20% מהתשובה)**
+- **מדריך התחלה צעד אחר צעד**
+- כלים דיגיטליים נגישים
+- רשימת **גורמים מקצועיים בישראל**
+- טיפים להתמודדות עם קשיים
+
+**5. מקורות ישראליים וכיווני המשך (5% מהתשובה)**
+- **מוסדות ישראליים ספציפיים**
+- ספרים ומאמרים מומלצים
+- עמותות וקהילות רלוונטיות
+- קורסים והכשרות מקצועיות
+
+### דרישות מיוחדות לתשובה
+
+**סגנון כתיבה:**
+- **שפה ישראלית טבעית** (לא תרגום)
+- **טון מקצועי אך נגיש**
+- שימוש בדוגמאות קונקרטיות
+- **הכללת אמוג'ים** להנגשה
+
+**תוכן מותאם:**
+- **שמות מקומות ישראליים** בדוגמאות
+- התייחסות ל**תרבות ומסורת**
+- **מודעות למציאות הישראלית**
+- **רגישות למגוון הרקעים**
+
+**נגישות:**
+- פתרונות לאנשים עם **מוגבלויות**
+- הצעות ל**תקציבים מוגבלים**
+- חלופות לאנשים **עם צרכים מיוחדים**
+
+### קריטריונים להערכת התשובה
+
+התשובה תוערך לפי:
+1. **שלמות המענה** - כיסוי כל הנדרש (40%)
+2. **התאמה תרבותית ישראלית** (25%)
+3. **יישימות ומעשיות** (20%)
+4. **עומק ואיכות התוכן** (10%)
+5. **נגישות ובהירות** (5%)
+
+**תודה על התשובה המקיפה!**`;
+
+            const englishPrompt = `# Advanced Comprehensive Analysis Prompt - ${topic}
+
+## The Advanced Prompt
+
+**Hello! I am requesting a comprehensive and culturally adapted response on the following topic:**
+
+**"${topic}"**
+
+### Required Self-Introduction
+Before your response, please introduce yourself briefly:
+- Who you are and what your technology is
+- **What unique added value** you bring to this topic
+- How you specialize in **personalization** and **cultural sensitivity**
+
+### Required Response Structure
+
+**1. Clear and Comprehensive Explanation (25% of response)**
+- What is the meaning and importance of the topic?
+- **Unique challenges in the current reality**
+- Effects and implications on different areas of life
+
+**2. Practical Examples (30% of response)**
+- **Detailed tables and lists**
+- Specific and diverse examples
+- **Solutions for various situations** (easy/medium/complex)
+- Adaptation to different experience levels
+
+**3. Diverse Perspectives (20% of response)**
+- Differences between **different audiences**
+- Variety between **approaches and methods**
+- **Economic and social perspective**
+- **Technological and traditional aspects**
+
+**4. Practical Recommendations (20% of response)**
+- **Step-by-step getting started guide**
+- Accessible digital tools
+- List of **professional resources**
+- Tips for dealing with difficulties
+
+**5. Sources and Future Directions (5% of response)**
+- **Specific relevant institutions**
+- Recommended books and articles
+- Relevant organizations and communities
+- Professional courses and training
+
+### Special Response Requirements
+
+**Writing Style:**
+- **Natural, native language** (not translation)
+- **Professional yet accessible tone**
+- Use of concrete examples
+- **Include emojis** for accessibility
+
+**Adapted Content:**
+- **Local examples** in illustrations
+- Reference to **culture and tradition**
+- **Awareness of current reality**
+- **Sensitivity to diverse backgrounds**
+
+**Accessibility:**
+- Solutions for people with **disabilities**
+- Suggestions for **limited budgets**
+- Alternatives for people **with special needs**
+
+### Response Evaluation Criteria
+
+The response will be evaluated by:
+1. **Completeness of response** - covering all requirements (40%)
+2. **Cultural adaptation** (25%)
+3. **Applicability and practicality** (20%)
+4. **Depth and content quality** (10%)
+5. **Accessibility and clarity** (5%)
+
+**Thank you for the comprehensive response!**`;
+
+            const prompt = language === 'hebrew' ? hebrewPrompt : englishPrompt;
             
-            if (language === 'hebrew') {
-                prompt = `אנא ספק תשובה מקיפה, מעמיקה ומעשית לנושא הבא: "${topic}"\n\nהתשובה צריכה לכלול:\n1. הסבר מפורט עם דוגמאות\n2. נקודות מבט שונות\n3. השלכות מעשיות\n4. המלצות ליישום\n5. מקורות או כיוונים לחקירה נוספת\n\nהתשובה צריכה להיות באורך של כ-300-500 מילים.`;
-            } else {
-                prompt = `Please provide a comprehensive, in-depth and practical answer to the following topic: "${topic}"\n\nThe answer should include:\n1. Detailed explanation with examples\n2. Different perspectives\n3. Practical implications\n4. Implementation recommendations\n5. Sources or directions for further research\n\nThe answer should be approximately 300-500 words long.`;
-            }
+            document.getElementById('generatedPrompt').innerHTML = prompt.replace(/\n/g, '<br>');
             
-            document.getElementById('generatedPrompt').value = prompt;
-            document.getElementById('promptResult').classList.remove('hidden');
+            showNotification('פרומפט מתקדם נוצר בהצלחה!', 'success');
         }
-        
+
         // Copy prompt to clipboard
         function copyPrompt() {
-            const prompt = document.getElementById('generatedPrompt');
-            prompt.select();
-            document.execCommand('copy');
-            
-            // Visual feedback
-            const button = event.target;
-            const originalText = button.innerHTML;
-            button.innerHTML = '<i class="fas fa-check ml-1"></i>הועתק!';
-            button.classList.add('copy-success');
-            
-            setTimeout(() => {
-                button.innerHTML = originalText;
-                button.classList.remove('copy-success');
-            }, 2000);
-        }
-        
-        // Analyze content and generate insights
-        function analyzeContent() {
-            const bots = ['chatgpt', 'claude', 'gemini', 'copilot', 'perplexity', 'deepseek', 'genspark', 'grok', 'other'];
-            let results = {};
-            let filledCount = 0;
-            
-            // Collect all results
-            bots.forEach(bot => {
-                const textarea = document.getElementById(`${bot}-result`);
-                if (textarea && textarea.value.trim()) {
-                    results[bot] = {
-                        content: textarea.value.trim(),
-                        name: bot === 'other' ? document.getElementById('other-source-name').value || 'מקור נוסף' : bot
-                    };
-                    filledCount++;
-                }
-            });
-            
-            if (filledCount < 2) {
-                alert('נא למלא לפחות 2 תוצאות כדי לבצע ניתוח משמעותי');
+            const prompt = document.getElementById('generatedPrompt').innerText;
+            if (!prompt || prompt.includes('הפרומפט יופיע')) {
+                showNotification('אנא הכן פרומפט תחילה', 'error');
                 return;
             }
             
-            currentResults = results;
-            
-            // Generate analysis
-            generateContentAnalysis(results);
-            
-            // Show results
-            document.getElementById('analysisResults').classList.remove('hidden');
-            document.getElementById('analysisResults').scrollIntoView({ behavior: 'smooth' });
+            navigator.clipboard.writeText(prompt).then(() => {
+                showNotification('הפרומפט הועתק בהצלחה!', 'success');
+            });
         }
-        
-        // Generate comprehensive content analysis
-        function generateContentAnalysis(results) {
+
+        // Regenerate prompt
+        function regeneratePrompt() {
+            generatePrompt();
+            showNotification('הפרומפט חודש בהצלחה!', 'success');
+        }
+
+        // Copy all results for independent analysis
+        function copyAllResults() {
+            const topic = document.getElementById('topicInput').value.trim();
+            const language = document.querySelector('input[name="language"]:checked').value;
+            
+            if (!topic) {
+                showNotification('אנא הכנס נושא תחילה', 'error');
+                return;
+            }
+            
+            const results = {
+                'ChatGPT': document.getElementById('chatgptResult').value.trim(),
+                'Claude': document.getElementById('claudeResult').value.trim(),
+                'Gemini': document.getElementById('geminiResult').value.trim(),
+                'Copilot': document.getElementById('copilotResult').value.trim(),
+                'Perplexity': document.getElementById('perplexityResult').value.trim(),
+                'DeepSeek': document.getElementById('deepseekResult').value.trim(),
+                'Genspark': document.getElementById('gensparkResult').value.trim(),
+                'Grok': document.getElementById('grokResult').value.trim()
+            };
+            
+            const otherSourceName = document.getElementById('otherSourceName').value.trim();
+            const otherSourceResult = document.getElementById('otherSourceResult').value.trim();
+            
+            if (otherSourceName && otherSourceResult) {
+                results[otherSourceName] = otherSourceResult;
+            }
+            
+            const filledResults = Object.entries(results).filter(([name, result]) => result !== '');
+            
+            if (filledResults.length === 0) {
+                showNotification('אנא הוסף לפחות תוצאה אחת', 'error');
+                return;
+            }
+            
+            const analysisPrompt = language === 'hebrew' ? 
+                `אנא הזדהה בתחילת תשובתך (לדוגמה: "אני Claude מ-Anthropic").
+
+נתח בצורה מקיפה את התשובות הבאות מבוטי AI שונים לנושא: "${topic}"
+
+=== תוצאות הבוטים ===
+${filledResults.map(([name, result]) => `${name}:\n${result}\n`).join('\n---\n\n')}
+
+בצע ניתוח מעמיק הכולל:
+
+1. 🎯 **זיהוי תמות מרכזיות**
+   - אילו רעיונות חוזרים בכל הבוטים?
+   - אילו נושאים נידונו הכי הרבה?
+
+2. 💡 **תובנות ייחודיות**
+   - מה כל בוט הביא שהאחרים לא הביאו?
+   - אילו רעיונות הם הכי חדשניים?
+
+3. 📊 **סגנונות תשובה**
+   - איך כל בוט ניגש לנושא?
+   - מה מייחד כל בוט?
+
+4. 🎨 **יצירת תוכן מורכב**
+   - כתב פוסט בלוג המשלב את הטוב ביותר
+   - צור רשימת פעולות מעשיות
+   - הציע רעיונות להמשך מחקר
+
+5. 🏆 **המלצות**
+   - איזה בוט הכי מתאים לנושא הזה?
+   - איך לשפר את השאלה הבאה?
+
+תודה על הניתוח המקיף!` :
+                `Please identify yourself at the beginning of your response (e.g., "I am Claude from Anthropic").
+
+Analyze comprehensively the following responses from different AI bots on the topic: "${topic}"
+
+=== Bot Results ===
+${filledResults.map(([name, result]) => `${name}:\n${result}\n`).join('\n---\n\n')}
+
+Perform an in-depth analysis including:
+
+1. 🎯 **Identify Central Themes**
+   - What ideas recur across all bots?
+   - Which topics were discussed most?
+
+2. 💡 **Unique Insights**
+   - What did each bot bring that others didn't?
+   - Which ideas are most innovative?
+
+3. 📊 **Response Styles**
+   - How did each bot approach the topic?
+   - What makes each bot unique?
+
+4. 🎨 **Create Complex Content**
+   - Write a blog post combining the best elements
+   - Create a list of practical actions
+   - Suggest ideas for further research
+
+5. 🏆 **Recommendations**
+   - Which bot is most suitable for this topic?
+   - How to improve the next question?
+
+Thank you for the comprehensive analysis!`;
+            
+            navigator.clipboard.writeText(analysisPrompt).then(() => {
+                showNotification('כל התוצאות הועתקו לניתוח עצמאי!', 'success');
+            });
+        }
+
+        // Analyze content automatically
+        function analyzeContent() {
             const topic = document.getElementById('topicInput').value.trim();
             
-            // Generate key insights
-            const keyInsights = analyzeKeyInsights(results);
-            document.getElementById('keyInsights').innerHTML = keyInsights;
+            if (!topic) {
+                showNotification('אנא הכנס נושא תחילה', 'error');
+                return;
+            }
             
-            // Generate unique perspectives
-            const uniquePerspectives = analyzeUniquePerspectives(results);
-            document.getElementById('uniquePerspectives').innerHTML = uniquePerspectives;
-            
-            // Generate content synthesis
-            const contentSynthesis = generateContentSynthesis(results, topic);
-            document.getElementById('contentSynthesis').innerHTML = contentSynthesis;
-            
-            // Generate blog post
-            const blogPost = generateBlogPost(results, topic);
-            document.getElementById('blogPost').innerHTML = blogPost;
-            
-            // Generate practical recommendations
-            const practicalRecommendations = generatePracticalRecommendations(results);
-            document.getElementById('practicalRecommendations').innerHTML = practicalRecommendations;
-            
-            // Generate next steps
-            const nextSteps = generateNextSteps(results);
-            document.getElementById('nextSteps').innerHTML = nextSteps;
-            
-            // Store analysis for export
-            currentAnalysis = {
-                topic,
-                keyInsights,
-                uniquePerspectives,
-                contentSynthesis,
-                blogPost,
-                practicalRecommendations,
-                nextSteps
+            const results = {
+                'ChatGPT': document.getElementById('chatgptResult').value.trim(),
+                'Claude': document.getElementById('claudeResult').value.trim(),
+                'Gemini': document.getElementById('geminiResult').value.trim(),
+                'Copilot': document.getElementById('copilotResult').value.trim(),
+                'Perplexity': document.getElementById('perplexityResult').value.trim(),
+                'DeepSeek': document.getElementById('deepseekResult').value.trim(),
+                'Genspark': document.getElementById('gensparkResult').value.trim(),
+                'Grok': document.getElementById('grokResult').value.trim()
             };
-        }
-        
-        // Analyze key insights from all responses
-        function analyzeKeyInsights(results) {
-            const insights = [];
-            const botNames = Object.keys(results);
             
-            insights.push(`<div class="flex items-start space-x-3">
-                <i class="fas fa-lightbulb text-yellow-500 mt-1"></i>
-                <div>
-                    <strong>תובנה מרכזית:</strong> ${botNames.length} מקורות שונים מציגים גישות מגוונות לנושא, כל אחד עם נקודות חוזק ייחודיות.
-                </div>
-            </div>`);
+            const otherSourceName = document.getElementById('otherSourceName').value.trim();
+            const otherSourceResult = document.getElementById('otherSourceResult').value.trim();
             
-            // Analyze content depth
-            const longResponses = botNames.filter(bot => results[bot].content.length > 500);
-            const shortResponses = botNames.filter(bot => results[bot].content.length <= 500);
-            
-            if (longResponses.length > 0) {
-                insights.push(`<div class="flex items-start space-x-3">
-                    <i class="fas fa-expand-arrows-alt text-blue-500 mt-1"></i>
-                    <div>
-                        <strong>עומק תוכן:</strong> ${longResponses.map(bot => results[bot].name).join(', ')} מספקים תוכן מעמיק ומפורט.
-                    </div>
-                </div>`);
+            if (otherSourceName && otherSourceResult) {
+                results[otherSourceName] = otherSourceResult;
             }
             
-            if (shortResponses.length > 0) {
-                insights.push(`<div class="flex items-start space-x-3">
-                    <i class="fas fa-compress-arrows-alt text-green-500 mt-1"></i>
-                    <div>
-                        <strong>תמציתיות:</strong> ${shortResponses.map(bot => results[bot].name).join(', ')} מציגים תשובות תמציתיות וממוקדות.
-                    </div>
-                </div>`);
+            const filledResults = Object.entries(results).filter(([name, result]) => result !== '');
+            
+            if (filledResults.length === 0) {
+                showNotification('אנא הוסף לפחות תוצאה אחת', 'error');
+                return;
             }
             
-            // Analyze common themes
-            insights.push(`<div class="flex items-start space-x-3">
-                <i class="fas fa-link text-purple-500 mt-1"></i>
-                <div>
-                    <strong>נושאים משותפים:</strong> זוהו מספר נושאים חוזרים שמופיעים במספר תשובות, מה שמעיד על חשיבותם.
-                </div>
-            </div>`);
+            // Create analysis
+            const analysisHTML = createAnalysis(topic, filledResults);
+            document.getElementById('analysisResults').innerHTML = analysisHTML;
+            document.getElementById('analysisSection').style.display = 'block';
             
-            return insights.join('');
+            // Scroll to analysis
+            document.getElementById('analysisSection').scrollIntoView({ behavior: 'smooth' });
+            
+            showNotification('הניתוח הושלם בהצלחה!', 'success');
         }
-        
-        // Analyze unique perspectives
-        function analyzeUniquePerspectives(results) {
-            const perspectives = [];
-            const botNames = Object.keys(results);
+
+        // Create analysis content
+        function createAnalysis(topic, results) {
+            const botNames = results.map(([name, _]) => name);
+            const wordCounts = results.map(([name, result]) => ({
+                name,
+                words: result.split(/\s+/).length,
+                result: result.substring(0, 200) + '...'
+            }));
             
-            botNames.forEach(bot => {
-                const content = results[bot].content;
-                const name = results[bot].name;
-                
-                // Analyze response characteristics
-                let characteristics = [];
-                
-                if (content.includes('דוגמ') || content.includes('example')) {
-                    characteristics.push('עשיר בדוגמאות');
-                }
-                if (content.includes('מקור') || content.includes('source') || content.includes('מחקר')) {
-                    characteristics.push('מבוסס מחקר');
-                }
-                if (content.includes('המלצ') || content.includes('recommend')) {
-                    characteristics.push('מעשי ויישומי');
-                }
-                if (content.length > 800) {
-                    characteristics.push('מקיף ומפורט');
-                }
-                if (content.includes('לעומת') || content.includes('מצד אחר') || content.includes('however')) {
-                    characteristics.push('מאוזן ומתחשב');
-                }
-                
-                const characteristicsText = characteristics.length > 0 ? 
-                    ` - ${characteristics.join(', ')}` : '';
-                
-                perspectives.push(`<div class="flex items-start space-x-3">
-                    <i class="fas fa-eye text-indigo-500 mt-1"></i>
-                    <div>
-                        <strong>${name}:</strong> ${characteristicsText || 'מספק פרספקטיבה ייחודית לנושא'}
+            return `
+                <div class="bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-lg">
+                    <h3 class="text-xl font-bold mb-4 text-center">ניתוח מקיף לנושא: "${topic}"</h3>
+                    
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h4 class="font-semibold mb-3 text-blue-700">📊 סטטיסטיקות בסיסיות</h4>
+                            <ul class="space-y-2 text-sm">
+                                <li><strong>מספר בוטים שהשיבו:</strong> ${results.length}</li>
+                                <li><strong>סה"כ מילים:</strong> ${wordCounts.reduce((sum, bot) => sum + bot.words, 0).toLocaleString()}</li>
+                                <li><strong>ממוצע מילים לבוט:</strong> ${Math.round(wordCounts.reduce((sum, bot) => sum + bot.words, 0) / results.length)}</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h4 class="font-semibold mb-3 text-green-700">🎯 מיפוי תשובות</h4>
+                            <div class="space-y-2 text-sm">
+                                ${wordCounts.map(bot => `
+                                    <div class="flex justify-between items-center">
+                                        <span class="font-medium">${bot.name}</span>
+                                        <span class="text-gray-600">${bot.words} מילים</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
                     </div>
-                </div>`);
-            });
-            
-            return perspectives.join('');
-        }
-        
-        // Generate content synthesis
-        function generateContentSynthesis(results, topic) {
-            const botNames = Object.keys(results);
-            
-            let synthesis = `<div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-lg mb-4">
-                <h4 class="font-bold text-lg mb-2">📊 סיכום מרכז</h4>
-                <p>בניתוח ${botNames.length} תשובות שונות לנושא "<strong>${topic}</strong>", עולות מספר תובנות מרכזיות:</p>
-            </div>`;
-            
-            synthesis += `<div class="space-y-4">`;
-            
-            // Main themes
-            synthesis += `<div class="bg-green-50 p-3 rounded-lg">
-                <h5 class="font-semibold text-green-800 mb-2">🎯 נושאים מרכזיים</h5>
-                <p>כל המקורות מתייחסים לחשיבות הנושא ומספקים זוויות ראייה שונות ומשלימות.</p>
-            </div>`;
-            
-            // Practical aspects
-            synthesis += `<div class="bg-yellow-50 p-3 rounded-lg">
-                <h5 class="font-semibold text-yellow-800 mb-2">⚡ היבטים מעשיים</h5>
-                <p>מספר מקורות מדגישים את הצורך ביישום מעשי ומציעים כיוונים ליישום.</p>
-            </div>`;
-            
-            // Future implications
-            synthesis += `<div class="bg-purple-50 p-3 rounded-lg">
-                <h5 class="font-semibold text-purple-800 mb-2">🔮 השלכות עתידיות</h5>
-                <p>הנושא נושא עמו השלכות רחבות טווח שחשוב לקחת בחשבון.</p>
-            </div>`;
-            
-            synthesis += `</div>`;
-            
-            return synthesis;
-        }
-        
-        // Generate blog post
-        function generateBlogPost(results, topic) {
-            const botNames = Object.keys(results);
-            
-            let blogPost = `<div class="prose max-w-none">
-                <h1 class="text-2xl font-bold mb-4">${topic}: מדריך מקיף בעידן הדיגיטלי</h1>
-                
-                <div class="text-gray-600 mb-6">
-                    <i class="fas fa-clock ml-1"></i>
-                    זמן קריאה: 5 דקות | 
-                    <i class="fas fa-robot ml-1"></i>
-                    מבוסס על ניתוח ${botNames.length} מקורות AI
-                </div>
-                
-                <div class="mb-6">
-                    <h2 class="text-xl font-semibold mb-3">🚀 מבוא</h2>
-                    <p class="mb-4">
-                        בעידן הדיגיטלי המתקדם, נושא "${topic}" הופך להיות יותר ויותר רלוונטי. 
-                        באמצעות ניתוח מעמיק של תשובות מ-${botNames.length} מקורות שונים, 
-                        אנו מספקים לכם מדריך מקיף הכולל תובנות מעשיות והמלצות ליישום.
-                    </p>
-                </div>
-                
-                <div class="mb-6">
-                    <h2 class="text-xl font-semibold mb-3">💡 תובנות מרכזיות</h2>
-                    <ul class="space-y-2">
-                        <li class="flex items-start">
-                            <i class="fas fa-check text-green-500 ml-2 mt-1"></i>
-                            <span>כל המקורות מסכימים על חשיבות הנושא בהקשר הנוכחי</span>
-                        </li>
-                        <li class="flex items-start">
-                            <i class="fas fa-check text-green-500 ml-2 mt-1"></i>
-                            <span>קיימות גישות שונות ומשלימות להתמודדות עם האתגרים</span>
-                        </li>
-                        <li class="flex items-start">
-                            <i class="fas fa-check text-green-500 ml-2 mt-1"></i>
-                            <span>הצורך בגישה מעשית ומתואמת לפתרון יעיל</span>
-                        </li>
-                    </ul>
-                </div>
-                
-                <div class="mb-6">
-                    <h2 class="text-xl font-semibold mb-3">🎯 המלצות ליישום</h2>
-                    <div class="bg-blue-50 p-4 rounded-lg">
-                        <p class="mb-3">על בסיס הניתוח המקיף, אנו ממליצים על:</p>
-                        <ol class="space-y-2">
-                            <li><strong>1.</strong> גישה מדורגת המתחילה בשלבים קטנים</li>
-                            <li><strong>2.</strong> שילוב של מספר פרספקטיבות למקסום התוצאות</li>
-                            <li><strong>3.</strong> מעקב והערכה שוטפת של התקדמות</li>
-                        </ol>
+                    
+                    <div class="mt-6 bg-white p-4 rounded-lg shadow">
+                        <h4 class="font-semibold mb-3 text-purple-700">💡 תובנות מרכזיות</h4>
+                        <div class="grid md:grid-cols-2 gap-4 text-sm">
+                            <div class="space-y-2">
+                                <h5 class="font-medium text-green-600">נקודות חוזק:</h5>
+                                <ul class="list-disc list-inside space-y-1 text-gray-700">
+                                    <li>מגוון רחב של פרספקטיבות</li>
+                                    <li>עושר בפרטים ובדוגמאות</li>
+                                    <li>התאמה לקהלים שונים</li>
+                                </ul>
+                            </div>
+                            <div class="space-y-2">
+                                <h5 class="font-medium text-blue-600">הזדמנויות לשיפור:</h5>
+                                <ul class="list-disc list-inside space-y-1 text-gray-700">
+                                    <li>שילוב תובנות מכמה בוטים</li>
+                                    <li>הוספת דוגמאות מקומיות</li>
+                                    <li>התמקדות בפעולות מעשיות</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 bg-white p-4 rounded-lg shadow">
+                        <h4 class="font-semibold mb-3 text-orange-700">🚀 המלצות לפעולה</h4>
+                        <div class="space-y-3 text-sm">
+                            <div class="bg-blue-50 p-3 rounded">
+                                <h5 class="font-medium text-blue-700">לשימוש מיידי:</h5>
+                                <p>בחר את התשובה המפורטת ביותר כבסיס והוסף אליה רעיונות מהבוטים האחרים</p>
+                            </div>
+                            <div class="bg-green-50 p-3 rounded">
+                                <h5 class="font-medium text-green-700">לפיתוח נוסף:</h5>
+                                <p>השתמש בכל התשובות כבסיס למאמר מקיף או סדרת פוסטים</p>
+                            </div>
+                            <div class="bg-purple-50 p-3 rounded">
+                                <h5 class="font-medium text-purple-700">לחקירה נוספת:</h5>
+                                <p>זהה נושאים שזוכים להסכמה רחבה וחקור אותם בעומק</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                
-                <div class="mb-6">
-                    <h2 class="text-xl font-semibold mb-3">🔮 מבט קדימה</h2>
-                    <p>
-                        הנושא צפוי להמשיך להתפתח, ולכן חשוב להישאר מעודכנים עם המגמות החדשות 
-                        ולהתאים את הגישה בהתאם. המשך מחקר ולמידה יאפשרו לנו להעמיק את ההבנה 
-                        ולשפר את היישום המעשי.
-                    </p>
-                </div>
-                
-                <div class="bg-gray-50 p-4 rounded-lg text-center">
-                    <p class="text-sm text-gray-600 mb-2">
-                        <i class="fas fa-info-circle ml-1"></i>
-                        מאמר זה נוצר באמצעות ניתוח מתקדם של תשובות מ-${botNames.length} מקורות AI שונים
-                    </p>
-                    <p class="text-xs text-gray-500">
-                        עבור תובנות נוספות, מומלץ לעיין במקורות המקוריים ולהתייעץ עם מומחים בתחום
-                    </p>
-                </div>
-            </div>`;
-            
-            return blogPost;
+            `;
         }
-        
-        // Generate practical recommendations
-        function generatePracticalRecommendations(results) {
-            const recommendations = [];
-            
-            recommendations.push(`<div class="flex items-start space-x-3">
-                <i class="fas fa-star text-yellow-500 mt-1"></i>
-                <div>
-                    <strong>שילוב תובנות:</strong> קח את הרעיונות הטובים ביותר מכל מקור וצור גישה משולבת.
-                </div>
-            </div>`);
-            
-            recommendations.push(`<div class="flex items-start space-x-3">
-                <i class="fas fa-search text-blue-500 mt-1"></i>
-                <div>
-                    <strong>חקירה מעמיקה:</strong> בחר 2-3 נקודות מעניינות במיוחד וחקור אותן לעומק.
-                </div>
-            </div>`);
-            
-            recommendations.push(`<div class="flex items-start space-x-3">
-                <i class="fas fa-users text-green-500 mt-1"></i>
-                <div>
-                    <strong>התייעצות מקצועית:</strong> שוחח עם מומחים בתחום לאמת ולהעמיק את התובנות.
-                </div>
-            </div>`);
-            
-            recommendations.push(`<div class="flex items-start space-x-3">
-                <i class="fas fa-clipboard-check text-purple-500 mt-1"></i>
-                <div>
-                    <strong>יישום מעשי:</strong> התחל עם פרויקט קטן לבדוק את היישימות של הרעיונות.
-                </div>
-            </div>`);
-            
-            return recommendations.join('');
-        }
-        
-        // Generate next steps
-        function generateNextSteps(results) {
-            const steps = [];
-            
-            steps.push(`<div class="flex items-start space-x-3">
-                <i class="fas fa-arrow-right text-red-500 mt-1"></i>
-                <div>
-                    <strong>מחקר נוסף:</strong> חפש מקורות עדכניים ומחקרים אקדמיים בנושא.
-                </div>
-            </div>`);
-            
-            steps.push(`<div class="flex items-start space-x-3">
-                <i class="fas fa-network-wired text-orange-500 mt-1"></i>
-                <div>
-                    <strong>רשת מקצועית:</strong> התחבר לקהילות ופורומים מקצועיים בתחום.
-                </div>
-            </div>`);
-            
-            steps.push(`<div class="flex items-start space-x-3">
-                <i class="fas fa-book text-indigo-500 mt-1"></i>
-                <div>
-                    <strong>למידה מתמשכת:</strong> קבע זמן קבוע לעדכון בפיתוחים חדשים.
-                </div>
-            </div>`);
-            
-            steps.push(`<div class="flex items-start space-x-3">
-                <i class="fas fa-share-alt text-teal-500 mt-1"></i>
-                <div>
-                    <strong>שיתוף ידע:</strong> שתף את התובנות עם אחרים ולמד מהתגובות.
-                </div>
-            </div>`);
-            
-            return steps.join('');
-        }
-        
-        // Copy blog post
-        function copyBlogPost() {
-            const blogContent = document.getElementById('blogPost').innerText;
-            navigator.clipboard.writeText(blogContent).then(() => {
-                const button = event.target;
-                const originalText = button.innerHTML;
-                button.innerHTML = '<i class="fas fa-check ml-1"></i>הועתק!';
-                button.classList.add('copy-success');
-                
-                setTimeout(() => {
-                    button.innerHTML = originalText;
-                    button.classList.remove('copy-success');
-                }, 2000);
-            });
-        }
-        
+
         // Export to Google Docs
         function exportToGoogleDocs() {
-            const content = generateExportContent();
-            const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `ניתוח_AI_${new Date().toISOString().split('T')[0]}.txt`;
-            a.click();
-            URL.revokeObjectURL(url);
+            const topic = document.getElementById('topicInput').value.trim();
+            const prompt = document.getElementById('generatedPrompt').innerText;
             
-            // Open Google Docs
-            setTimeout(() => {
-                window.open('https://docs.google.com/document/create', '_blank');
-            }, 1000);
-        }
-        
-        // Export to Markdown
-        function exportToMarkdown() {
-            const content = generateMarkdownContent();
-            const blob = new Blob([content], { type: 'text/markdown;charset=utf-8' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `ניתוח_AI_${new Date().toISOString().split('T')[0]}.md`;
-            a.click();
-            URL.revokeObjectURL(url);
-        }
-        
-        // Save to local storage
-        function saveToLocal() {
-            const data = {
-                timestamp: new Date().toISOString(),
-                topic: document.getElementById('topicInput').value,
-                results: currentResults,
-                analysis: currentAnalysis
+            if (!topic) {
+                showNotification('אנא הכנס נושא תחילה', 'error');
+                return;
+            }
+            
+            const results = {
+                'ChatGPT': document.getElementById('chatgptResult').value.trim(),
+                'Claude': document.getElementById('claudeResult').value.trim(),
+                'Gemini': document.getElementById('geminiResult').value.trim(),
+                'Copilot': document.getElementById('copilotResult').value.trim(),
+                'Perplexity': document.getElementById('perplexityResult').value.trim(),
+                'DeepSeek': document.getElementById('deepseekResult').value.trim(),
+                'Genspark': document.getElementById('gensparkResult').value.trim(),
+                'Grok': document.getElementById('grokResult').value.trim()
             };
             
-            const savedData = JSON.parse(localStorage.getItem('aiAnalysisHistory') || '[]');
-            savedData.push(data);
-            localStorage.setItem('aiAnalysisHistory', JSON.stringify(savedData));
+            const otherSourceName = document.getElementById('otherSourceName').value.trim();
+            const otherSourceResult = document.getElementById('otherSourceResult').value.trim();
             
-            alert('הנתונים נשמרו בהצלחה במחשב שלך!');
-        }
-        
-        // Generate export content
-        function generateExportContent() {
-            const topic = document.getElementById('topicInput').value;
-            const date = new Date().toLocaleDateString('he-IL');
-            
-            let content = `ניתוח AI - ${topic}\n`;
-            content += `תאריך: ${date}\n`;
-            content += `${'='.repeat(50)}\n\n`;
-            
-            // Add results
-            Object.keys(currentResults).forEach(bot => {
-                content += `${currentResults[bot].name.toUpperCase()}\n`;
-                content += `${'-'.repeat(20)}\n`;
-                content += `${currentResults[bot].content}\n\n`;
-            });
-            
-            // Add analysis if available
-            if (currentAnalysis.blogPost) {
-                content += `פוסט בלוג מוכן\n`;
-                content += `${'-'.repeat(20)}\n`;
-                content += `${document.getElementById('blogPost').innerText}\n\n`;
+            if (otherSourceName && otherSourceResult) {
+                results[otherSourceName] = otherSourceResult;
             }
             
-            return content;
-        }
-        
-        // Generate markdown content
-        function generateMarkdownContent() {
-            const topic = document.getElementById('topicInput').value;
-            const date = new Date().toLocaleDateString('he-IL');
+            const filledResults = Object.entries(results).filter(([name, result]) => result !== '');
             
-            let content = `# ניתוח AI - ${topic}\n\n`;
-            content += `**תאריך:** ${date}\n\n`;
-            
-            // Add results
-            content += `## תוצאות מהבוטים\n\n`;
-            Object.keys(currentResults).forEach(bot => {
-                content += `### ${currentResults[bot].name}\n\n`;
-                content += `${currentResults[bot].content}\n\n`;
-            });
-            
-            // Add analysis if available
-            if (currentAnalysis.blogPost) {
-                content += `## פוסט בלוג מוכן\n\n`;
-                content += `${document.getElementById('blogPost').innerText}\n\n`;
+            if (filledResults.length === 0) {
+                showNotification('אנא הוסף לפחות תוצאה אחת', 'error');
+                return;
             }
             
-            return content;
+            const docContent = `השוואת תוצאות AI - ${topic}
+תאריך: ${new Date().toLocaleDateString('he-IL')}
+
+הפרומפט ששימש:
+${prompt}
+
+תוצאות:
+${filledResults.map(([name, result]) => `${name}:\n${result}\n`).join('\n---\n\n')}
+
+סיכום:
+- מספר בוטים: ${filledResults.length}
+- סה"כ מילים: ${filledResults.reduce((sum, [_, result]) => sum + result.split(/\s+/).length, 0).toLocaleString()}
+- תאריך יצירה: ${new Date().toLocaleString('he-IL')}`;
+            
+            // Create a downloadable text file
+            const blob = new Blob([docContent], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `השוואת_AI_${topic.replace(/\s+/g, '_')}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showNotification('הקובץ ירד בהצלחה!', 'success');
         }
-        
+
         // Clear all fields
         function clearAll() {
             if (confirm('האם אתה בטוח שברצונך לנקות את כל השדות?')) {
-                // Clear input fields
                 document.getElementById('topicInput').value = '';
-                document.getElementById('generatedPrompt').value = '';
-                document.getElementById('promptResult').classList.add('hidden');
+                document.getElementById('generatedPrompt').innerHTML = 'הפרומפט יופיע כאן לאחר הכנתו...';
                 
-                // Clear result fields
-                const bots = ['chatgpt', 'claude', 'gemini', 'copilot', 'perplexity', 'deepseek', 'genspark', 'grok', 'other'];
-                bots.forEach(bot => {
-                    const textarea = document.getElementById(`${bot}-result`);
-                    if (textarea) textarea.value = '';
-                });
+                const resultFields = ['chatgptResult', 'claudeResult', 'geminiResult', 'copilotResult', 'perplexityResult', 'deepseekResult', 'gensparkResult', 'grokResult', 'otherSourceResult'];
+                resultFields.forEach(id => document.getElementById(id).value = '');
                 
-                // Clear other source name
-                document.getElementById('other-source-name').value = '';
+                document.getElementById('otherSourceName').value = '';
+                document.getElementById('analysisSection').style.display = 'none';
                 
-                // Hide analysis results
-                document.getElementById('analysisResults').classList.add('hidden');
-                
-                // Clear global variables
-                currentResults = {};
-                currentAnalysis = {};
-                
-                // Show success message
-                const tempDiv = document.createElement('div');
-                tempDiv.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50';
-                tempDiv.innerHTML = '<i class="fas fa-check ml-2"></i>כל השדות נוקו!';
-                document.body.appendChild(tempDiv);
-                
-                setTimeout(() => {
-                    document.body.removeChild(tempDiv);
-                }, 3000);
+                updateProgress();
+                showNotification('כל השדות נוקו בהצלחה!', 'success');
             }
         }
-        
-        // Show user guide
+
+        // Show guide modal
         function showGuide() {
-            document.getElementById('guideModal').classList.remove('hidden');
-            document.getElementById('guideModal').classList.add('flex');
+            document.getElementById('guideModal').style.display = 'block';
         }
-        
-        // Close user guide
+
+        // Close guide modal
         function closeGuide() {
-            document.getElementById('guideModal').classList.add('hidden');
-            document.getElementById('guideModal').classList.remove('flex');
+            document.getElementById('guideModal').style.display = 'none';
         }
-        
-        // Initialize the application
-        document.addEventListener('DOMContentLoaded', function() {
-            // Load saved data if available
-            const savedData = localStorage.getItem('aiAnalysisHistory');
-            if (savedData) {
-                console.log('נמצא נתונים שמורים:', JSON.parse(savedData).length, 'רשומות');
+
+        // Show notification
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('guideModal');
+            if (event.target === modal) {
+                closeGuide();
             }
-            
-            // Add keyboard shortcuts
-            document.addEventListener('keydown', function(e) {
-                if (e.ctrlKey && e.key === 'Enter') {
-                    if (document.getElementById('topicInput').value) {
-                        generatePrompt();
-                    }
-                }
-                if (e.key === 'Escape') {
-                    closeGuide();
-                }
-            });
-            
-            // Auto-save on input changes
-            const autoSaveElements = ['topicInput'];
-            autoSaveElements.forEach(id => {
-                const element = document.getElementById(id);
-                if (element) {
-                    element.addEventListener('input', debounce(() => {
-                        localStorage.setItem(`temp_${id}`, element.value);
-                    }, 500));
-                    
-                    // Restore saved value
-                    const savedValue = localStorage.getItem(`temp_${id}`);
-                    if (savedValue) {
-                        element.value = savedValue;
-                    }
-                }
-            });
-        });
-        
-        // Debounce function for auto-save
-        function debounce(func, wait) {
-            let timeout;
-            return function executedFunction(...args) {
-                const later = () => {
-                    clearTimeout(timeout);
-                    func(...args);
-                };
-                clearTimeout(timeout);
-                timeout = setTimeout(later, wait);
-            };
         }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateProgress();
+        });
     </script>
 </body>
 </html>
